@@ -86,23 +86,25 @@ function Login(props: Props) {
             onChange={e => setEmail(e.target.value)}
             onBlur={handleEmailBlur}
           />
-          <div id="email-error">
+          <div id="email-error" className="errorMsg">
             {errors.email && <InputErrorMessage message={errors.email} />}
           </div>
         </fieldset>
-        <label htmlFor="password">
-          <FormattedMessage id="login.password.label" />
-        </label>
-        <input
-          type="password"
-          name="password"
-          placeholder={props.intl.formatMessage({
-            id: "login.password.placeholder"
-          })}
-          value={password}
-          onChange={e => setPassword(e.target.value)}
-          onBlur={handlePasswordBlur}
-        />
+        <fieldset>
+          <label htmlFor="password">
+            <FormattedMessage id="login.password.label" />
+          </label>
+          <input
+            type="password"
+            name="password"
+            placeholder={props.intl.formatMessage({
+              id: "login.password.placeholder"
+            })}
+            value={password}
+            onChange={e => setPassword(e.target.value)}
+            onBlur={handlePasswordBlur}
+          />
+        </fieldset>
 
         <div className={styles.login__actions}>
           <a href="/signup">
