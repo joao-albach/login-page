@@ -3,11 +3,56 @@ import styles from "./Login.module.scss";
 import Logo from "images/logo.svg";
 import { FormattedMessage, injectIntl, InjectedIntlProps } from "react-intl";
 import Button from "components/Button";
+import { validateEmail, validatePassword } from "utils/validators";
+import InputErrorMessage from "components/InputErrorMessage";
 
 interface Props extends InjectedIntlProps {}
 
 function Login(props: Props) {
   const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [errors, setErrors] = React.useState<{
+    email: string | null;
+    password: string | null;
+  }>({ email: null, password: null });
+
+  const validateEmailInput = (email: string) => {
+    if (!validateEmail(email)) {
+      setErrors(errors => ({
+        ...errors,
+        email: props.intl.formatMessage({ id: "login.email.error-message" })
+      }));
+    } else {
+      setErrors(errors => ({
+        ...errors,
+        email: null
+      }));
+    }
+  };
+
+  const validatePasswordInput = (password: string) => {
+    if (!validatePassword(password)) {
+      setErrors(errors => ({
+        ...errors,
+        password: props.intl.formatMessage({
+          id: "login.password.error-message"
+        })
+      }));
+    } else {
+      setErrors(errors => ({
+        ...errors,
+        password: null
+      }));
+    }
+  };
+
+  const handleEmailBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    validateEmailInput(email);
+  };
+
+  const handlePasswordBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    validatePasswordInput(password);
+  };
 
   return (
     <div className={styles.login}>
@@ -27,18 +72,24 @@ function Login(props: Props) {
       </div>
 
       <form action="">
-        <label htmlFor="user">
-          <FormattedMessage id="login.email.label" />
-        </label>
-        <input
-          type="email"
-          name="user"
-          placeholder={props.intl.formatMessage({
-            id: "login.email.placeholder"
-          })}
-          value={email}
-          onChange={e => setEmail(e.target.value)}
-        />
+        <fieldset>
+          <label htmlFor="user">
+            <FormattedMessage id="login.email.label" />
+          </label>
+          <input
+            type="email"
+            name="user"
+            placeholder={props.intl.formatMessage({
+              id: "login.email.placeholder"
+            })}
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            onBlur={handleEmailBlur}
+          />
+          <div id="email-error">
+            {errors.email && <InputErrorMessage message={errors.email} />}
+          </div>
+        </fieldset>
         <label htmlFor="password">
           <FormattedMessage id="login.password.label" />
         </label>
@@ -48,6 +99,9 @@ function Login(props: Props) {
           placeholder={props.intl.formatMessage({
             id: "login.password.placeholder"
           })}
+          value={password}
+          onChange={e => setPassword(e.target.value)}
+          onBlur={handlePasswordBlur}
         />
 
         <div className={styles.login__actions}>

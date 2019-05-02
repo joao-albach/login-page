@@ -1,10 +1,12 @@
 {
   "login.title": "Sign in",
   "login.subtitle": "to continue to {productName}",
-  "login.email.placeholder": "Email or phone",
-  "login.email.label": "Enter your email or phone",
+  "login.email.placeholder": "Email",
+  "login.email.label": "Enter your email",
+  "login.email.error-message": "Invalid email",
   "login.password.placeholder": "Password",
   "login.password.label": "Enter your password",
+  "login.password.error-message": "Invalid password",
   "login.signup-link": "Create account",
   "login.button": "Next"
 }
